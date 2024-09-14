@@ -58,6 +58,33 @@ async function run() {
         })
 
 
+        app.put('/foodUpdate/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const newUsers = req.body
+            const items = {
+                $set: {
+                    name: newUsers.name,
+                    image: newUsers.image,
+                    price: newUsers.price,
+                    protein: newUsers.protein,
+                    carbs: newUsers.carbs,
+                    fat: newUsers.fat,
+                    details: newUsers.details,
+                    ingredients: newUsers.ingredients,
+                    instructions: newUsers.instructions,
+                    meal_plan: newUsers.meal_plan,
+                    meal: newUsers.meal,
+
+                }
+            }
+
+            const result = await foodCollection.updateOne(filter, items, options)
+            res.send(result)
+        })
+
+
 
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
